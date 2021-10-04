@@ -1,0 +1,81 @@
+package ca.uwaterloo.joos1wc.ast;
+
+import ca.uwaterloo.joos1wc.ast.declaration.FieldDeclaration;
+import ca.uwaterloo.joos1wc.ast.declaration.ImportDeclaration;
+import ca.uwaterloo.joos1wc.ast.declaration.MethodDeclaration;
+import ca.uwaterloo.joos1wc.ast.declaration.PackageDeclaration;
+import ca.uwaterloo.joos1wc.ast.declaration.TypeDeclaration;
+import ca.uwaterloo.joos1wc.ast.declaration.VariableDeclaration;
+import ca.uwaterloo.joos1wc.ast.expression.ArrayAccess;
+import ca.uwaterloo.joos1wc.ast.expression.ArrayCreation;
+import ca.uwaterloo.joos1wc.ast.expression.Assignment;
+import ca.uwaterloo.joos1wc.ast.expression.CastExpression;
+import ca.uwaterloo.joos1wc.ast.expression.ClassInstanceCreation;
+import ca.uwaterloo.joos1wc.ast.expression.FieldAccess;
+import ca.uwaterloo.joos1wc.ast.expression.InfixExpression;
+import ca.uwaterloo.joos1wc.ast.expression.InstanceofExpression;
+import ca.uwaterloo.joos1wc.ast.expression.MethodInvocation;
+import ca.uwaterloo.joos1wc.ast.expression.ParenthesizedExpression;
+import ca.uwaterloo.joos1wc.ast.expression.PrefixExpression;
+import ca.uwaterloo.joos1wc.ast.expression.ThisExpression;
+import ca.uwaterloo.joos1wc.ast.expression.VariableDeclarationExpression;
+import ca.uwaterloo.joos1wc.ast.literal.BooleanLiteral;
+import ca.uwaterloo.joos1wc.ast.literal.CharLiteral;
+import ca.uwaterloo.joos1wc.ast.literal.IntLiteral;
+import ca.uwaterloo.joos1wc.ast.literal.NullLiteral;
+import ca.uwaterloo.joos1wc.ast.literal.StringLiteral;
+import ca.uwaterloo.joos1wc.ast.statement.EmptyStatement;
+import ca.uwaterloo.joos1wc.ast.statement.ExpressionStatement;
+import ca.uwaterloo.joos1wc.ast.statement.ForStatement;
+import ca.uwaterloo.joos1wc.ast.statement.IfThenStatement;
+import ca.uwaterloo.joos1wc.ast.statement.ReturnStatement;
+import ca.uwaterloo.joos1wc.ast.statement.VariableDeclarationStatement;
+import ca.uwaterloo.joos1wc.ast.statement.WhileStatement;
+
+// Subscribe to visitor available
+public interface Visitor {
+
+  public void visit(ArrayAccess node);
+  public void visit(ArrayCreation node);
+  public void visit(ArrayType node);
+  public void visit(Assignment node);
+  public void visit(Block node);
+  public void visit(BooleanLiteral node);
+  public void visit(CastExpression node);
+  public void visit(CharLiteral node);
+  public void visit(ClassInstanceCreation node);
+  public void visit(CompilationUnit node);
+  public void visit(EmptyStatement node);
+  public void visit(ExpressionStatement node);
+  public void visit(FieldAccess node);
+  public void visit(FieldDeclaration node);
+  public void visit(ForStatement node);
+  public void visit(IfThenStatement node);
+  public void visit(ImportDeclaration node);
+  public void visit(InfixExpression node);
+  public void visit(InstanceofExpression node);
+  public void visit(IntLiteral node);
+  public void visit(MethodDeclaration node);
+  public void visit(MethodInvocation node);
+  public void visit(Modifier node);
+  public void visit(NonTerminal node);
+  public void visit(NullLiteral node);
+  public void visit(PackageDeclaration node);
+  public void visit(ParenthesizedExpression node);
+  public void visit(PrefixExpression node);
+  public void visit(PrimitiveType node);
+  public void visit(QualifiedName node);
+  public void visit(ReturnStatement node);
+  public void visit(SimpleName node);
+  public void visit(SimpleType node);
+  public void visit(StringLiteral node);
+  public void visit(Terminal node);
+  public void visit(ThisExpression node);
+  public void visit(TreeNode node);
+  public void visit(TypeDeclaration node);
+  public void visit(VariableDeclaration node);
+  public void visit(VariableDeclarationExpression node);
+  public void visit(VariableDeclarationStatement node);
+  public void visit(WhileStatement node);
+
+}

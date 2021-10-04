@@ -1,0 +1,18 @@
+slug: jcompiler
+description: A Joos programming language compiler, written in Java.
+project: uwaterloo
+namespace:
+status: archived
+icon: icon.svg
+topics: |-
+  [
+    "group",
+    "joos",
+    "compiler",
+    "java",
+    "parser",
+    "lexer",
+    "ast",
+    "coursework",
+    "team"
+  ]

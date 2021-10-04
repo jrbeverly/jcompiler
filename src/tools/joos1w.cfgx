@@ -1,0 +1,379 @@
+64
+EOF
+ID
+INTLITERAL
+TRUE
+FALSE
+CHARLITERAL
+STRLITERAL
+NULL
+COMMENT
+ABSTRACT
+IF
+THIS
+BOOLEAN
+DO
+IMPLEMENTS
+PROTECTED
+IMPORT
+PUBLIC
+BYTE
+ELSE
+INSTANCEOF
+RETURN
+EXTENDS
+INT
+SHORT
+FINAL
+INTERFACE
+STATIC
+VOID
+CHAR
+CLASS
+NATIVE
+WHILE
+FOR
+NEW
+PACKAGE
+LPAREN
+RPAREN
+LBRACE
+RBRACE
+LBRACKET
+RBRACKET
+SEMICOLON
+COMMA
+DOT
+EQ
+GT
+LT
+BANG
+DEQUAL
+LTE
+GTE
+NEQ
+LOGAND
+LOGOR
+PLUS
+MINUS
+MULT
+DIV
+BITAND
+BITOR
+BITNOT
+MOD
+WHITESPACE
+
+# 2.3: syntactic grammar
+Goal:
+  CompilationUnit EOF
+
+# 3: lexical structure
+Literal:
+  INTLITERAL
+  TRUE
+  FALSE
+  CHARLITERAL
+  STRLITERAL
+  NULL
+
+# 4: types, values, and variables
+# No floating points or multidimensional arrays
+Type:
+  PrimitiveType
+  ReferenceType
+PrimitiveType:
+  BOOLEAN
+  BYTE
+  SHORT
+  INT
+  CHAR
+ReferenceType:
+  ClassOrInterfaceType
+  ArrayType
+ClassOrInterfaceType:
+  Name
+ClassType:
+  ClassOrInterfaceType
+InterfaceType:
+  ClassOrInterfaceType
+ArrayType:
+  PrimitiveType LBRACKET RBRACKET
+  Name LBRACKET RBRACKET
+
+# 6: names
+Name:
+  SimpleName
+  QualifiedName
+SimpleName:
+  ID
+QualifiedName:
+  Name DOT SimpleName
+
+# 7: packages
+CompilationUnit:
+  PackageDeclaration(opt) ImportDeclarations(opt) TypeDeclarations(opt)
+ImportDeclarations:
+  ImportDeclaration
+  ImportDeclarations ImportDeclaration
+TypeDeclarations:
+  TypeDeclaration
+  TypeDeclarations TypeDeclaration
+PackageDeclaration:
+  PACKAGE Name SEMICOLON
+ImportDeclaration:
+  SingleTypeImportDeclaration
+  TypeImportOnDemandDeclaration
+SingleTypeImportDeclaration:
+  IMPORT Name SEMICOLON
+TypeImportOnDemandDeclaration:
+  IMPORT Name DOT MULT SEMICOLON
+TypeDeclaration:
+  ClassDeclaration
+  InterfaceDeclaration
+  SEMICOLON
+
+# Productions used only in the LALR(1) grammar
+Modifiers:
+  Modifier
+  Modifiers Modifier
+Modifier:
+  PUBLIC
+  PROTECTED
+  STATIC
+  ABSTRACT
+  FINAL
+  NATIVE
+
+# 8.1: class declaration
+ClassDeclaration:
+  Modifiers(opt) CLASS ID Super(opt) Interfaces(opt) ClassBody
+Super:
+  EXTENDS ClassType
+Interfaces:
+  IMPLEMENTS InterfaceTypeList
+InterfaceTypeList:
+  InterfaceType
+  InterfaceTypeList COMMA InterfaceType
+ClassBody:
+  LBRACE ClassBodyDeclarations(opt) RBRACE
+ClassBodyDeclarations:
+  ClassBodyDeclaration
+  ClassBodyDeclarations ClassBodyDeclaration
+ClassBodyDeclaration:
+  ClassMemberDeclaration
+  ConstructorDeclaration
+ClassMemberDeclaration:
+  FieldDeclaration
+  MethodDeclaration
+  AbstractMethodDeclaration
+
+# 8.3: field declarations
+# No multidimensional arrays or array initializers
+# No array suffix
+# No multiple variables per declaration
+FieldDeclaration:
+  Modifiers(opt) Type ID SEMICOLON
+  Modifiers(opt) Type ID EQ Expression SEMICOLON
+
+# 8.4: method declarations
+# No throws
+MethodDeclaration:
+  MethodHeader Block
+AbstractMethodDeclaration:
+  MethodHeader SEMICOLON
+MethodHeader:
+  Modifiers(opt) Type MethodDeclarator
+  Modifiers(opt) VOID MethodDeclarator
+MethodDeclarator:
+  ID LPAREN FormalParameterList(opt) RPAREN
+FormalParameterList:
+  FormalParameter
+  FormalParameterList COMMA FormalParameter
+FormalParameter:
+  Type ID
+
+# 8.5: static initializers (not part of Joos1w)
+
+# 8.6: constructor declarations
+# No this call or super call (explicit constructor invocation)
+ConstructorDeclaration:
+  Modifiers(opt) ConstructorDeclarator Block
+ConstructorDeclarator:
+  ID LPAREN FormalParameterList(opt) RPAREN
+
+# 9.1: interface declarations
+# Unsure if interface inheritance or interface bodies are required (most likely yes, but no code on website)
+# No interface constants
+InterfaceDeclaration:
+  Modifiers(opt) INTERFACE ID ExtendsInterfaces(opt) InterfaceBody
+ExtendsInterfaces:
+  EXTENDS InterfaceType
+  ExtendsInterfaces COMMA InterfaceType
+InterfaceBody:
+  LBRACE InterfaceMemberDeclarations(opt) RBRACE
+InterfaceMemberDeclarations:
+  InterfaceMemberDeclaration
+  InterfaceMemberDeclarations InterfaceMemberDeclaration
+InterfaceMemberDeclaration:
+  AbstractMethodDeclaration
+
+# 10: arrays (i.e. array initializers, not part of Joos1w)
+
+# 14: blocks and statements
+# No switch, do-while, break, continue, synchronized, throw/try/catch/finally
+# No labeled statements
+Block:
+  LBRACE BlockStatements(opt) RBRACE
+BlockStatements:
+  BlockStatement
+  BlockStatements BlockStatement
+BlockStatement:
+  LocalVariableDeclarationStatement
+  Statement
+LocalVariableDeclarationStatement:
+  LocalVariableDeclaration SEMICOLON
+LocalVariableDeclaration:
+  Type ID EQ Expression
+Statement:
+  StatementWithoutTrailingSubstatement
+  IfThenStatement
+  IfThenElseStatement
+  WhileStatement
+  ForStatement
+StatementNoShortIf:
+  StatementWithoutTrailingSubstatement
+  IfThenElseStatementNoShortIf
+  WhileStatementNoShortIf
+  ForStatementNoShortIf
+StatementWithoutTrailingSubstatement:
+  Block
+  ExpressionStatement
+  ReturnStatement
+  SEMICOLON
+ExpressionStatement:
+  StatementExpression SEMICOLON
+StatementExpression:
+  Assignment
+  MethodInvocation
+  ClassInstanceCreationExpression
+IfThenStatement:
+  IF LPAREN Expression RPAREN Statement
+IfThenElseStatement:
+  IF LPAREN Expression RPAREN StatementNoShortIf ELSE Statement
+IfThenElseStatementNoShortIf:
+  IF LPAREN Expression RPAREN StatementNoShortIf ELSE StatementNoShortIf
+WhileStatement:
+  WHILE LPAREN Expression RPAREN Statement
+WhileStatementNoShortIf:
+  WHILE LPAREN Expression RPAREN StatementNoShortIf
+ForStatement:
+  FOR LPAREN ForInit(opt) SEMICOLON Expression(opt) SEMICOLON ForUpdate(opt) RPAREN Statement
+ForStatementNoShortIf:
+  FOR LPAREN ForInit(opt) SEMICOLON Expression(opt) SEMICOLON ForUpdate(opt) RPAREN StatementNoShortIf
+ForInit:
+  StatementExpression
+  LocalVariableDeclaration
+ForUpdate:
+  StatementExpression
+StatementExpressionList:
+  StatementExpression
+  StatementExpressionList COMMA StatementExpression
+ReturnStatement:
+  RETURN Expression(opt) SEMICOLON
+
+# 15: expressions
+# No multidimensional arrays
+# No super method call or field access
+# No increment/decrement
+# No unary plus
+# No bit shifts
+# No bitwise operations (^, ~)
+# No ternary expressions
+# No assignment operations
+# TODO seem to be allowing multidimensional array access right now
+Primary:
+  PrimaryNoNewArray
+  ArrayCreationExpression
+PrimaryNoNewArray:
+  Literal
+  THIS
+  LPAREN Expression RPAREN
+  ClassInstanceCreationExpression
+  FieldAccess
+  MethodInvocation
+  ArrayAccess
+ClassInstanceCreationExpression:
+  NEW ClassType LPAREN ArgumentList(opt) RPAREN
+ArgumentList:
+  Expression
+  ArgumentList COMMA Expression
+ArrayCreationExpression:
+  NEW PrimitiveType DimExpr
+  NEW ClassOrInterfaceType DimExpr
+DimExpr:
+  LBRACKET Expression RBRACKET
+FieldAccess:
+  Primary DOT ID
+MethodInvocation:
+  Name LPAREN ArgumentList(opt) RPAREN
+  Primary DOT ID LPAREN ArgumentList(opt) RPAREN
+ArrayAccess:
+  Name LBRACKET Expression RBRACKET
+  PrimaryNoNewArray LBRACKET Expression RBRACKET
+UnaryExpression:
+  MINUS UnaryExpression
+  UnaryExpressionNotPlusMinus
+UnaryExpressionNotPlusMinus:
+  Primary
+  Name
+  BANG UnaryExpression
+  CastExpression
+CastExpression:
+  LPAREN PrimitiveType LBRACKET RBRACKET RPAREN UnaryExpression
+  LPAREN PrimitiveType RPAREN UnaryExpression
+  LPAREN Expression RPAREN UnaryExpressionNotPlusMinus
+  LPAREN Name LBRACKET RBRACKET RPAREN UnaryExpressionNotPlusMinus
+MultiplicativeExpression:
+  UnaryExpression
+  MultiplicativeExpression MULT UnaryExpression
+  MultiplicativeExpression DIV UnaryExpression
+  MultiplicativeExpression MOD UnaryExpression
+AdditiveExpression:
+  MultiplicativeExpression
+  AdditiveExpression PLUS MultiplicativeExpression
+  AdditiveExpression MINUS MultiplicativeExpression
+RelationalExpression:
+  AdditiveExpression
+  RelationalExpression LT AdditiveExpression
+  RelationalExpression GT AdditiveExpression
+  RelationalExpression LTE AdditiveExpression
+  RelationalExpression GTE AdditiveExpression
+  RelationalExpression INSTANCEOF ReferenceType
+EqualityExpression:
+  RelationalExpression
+  EqualityExpression DEQUAL RelationalExpression
+  EqualityExpression NEQ RelationalExpression
+AndExpression:
+  EqualityExpression
+  AndExpression BITAND EqualityExpression
+InclusiveOrExpression:
+  AndExpression
+  InclusiveOrExpression BITOR AndExpression
+ConditionalAndExpression:
+  InclusiveOrExpression
+  ConditionalAndExpression LOGAND InclusiveOrExpression
+ConditionalOrExpression:
+  ConditionalAndExpression
+  ConditionalOrExpression LOGOR ConditionalAndExpression
+AssignmentExpression:
+  ConditionalOrExpression
+  Assignment
+Assignment:
+  LeftHandSide EQ AssignmentExpression
+LeftHandSide:
+  Name
+  FieldAccess
+  ArrayAccess
+Expression:
+  AssignmentExpression

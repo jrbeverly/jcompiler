@@ -1,0 +1,30 @@
+# ignore files that end in ~
+*~
+
+## Outputs
+*.pdf
+
+## Core latex/pdflatex auxiliary files:
+*.aux
+*.lof
+*.log
+*.lot
+*.fls
+*.out
+*.toc
+
+## Build tool auxiliary files:
+*.fdb_latexmk
+*.synctex.gz
+*.synctex.gz(busy)
+*.pdfsync
+
+# ignore the build targets
+target/
+*.class
+output/
+
+# ignore generated files
+*.cfg
+*.lalr1
+*.lr1

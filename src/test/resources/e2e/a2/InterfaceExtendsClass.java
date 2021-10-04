@@ -1,0 +1,1 @@
+public interface InterfaceExtendsClass extends String {}
